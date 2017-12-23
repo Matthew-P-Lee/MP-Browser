@@ -71,13 +71,16 @@ for tick in mp_ticks['ticks']:
 	
 	#store these to load routes (should requery)
 	route_Ids.append(str(route_id))
-		
+	
+
 	response = tbl_ticks.get_item(
 			Key={
 				"RouteId": int(route_id),
+				"UserId": int(user_id)
 			}
 		)
-	
+
+#	item = 0	
 	item = response.get('Item',0)
 	
 	#check to see if the route already exists then insert the tick into DDB
@@ -86,7 +89,8 @@ for tick in mp_ticks['ticks']:
 		tbl_ticks.put_item(
 			Item={
 				'RouteId': route_id,
-				'date': tick['date']
+				'date': tick['date'],
+				'UserId': user_id
 			}
 		)
 	else:
