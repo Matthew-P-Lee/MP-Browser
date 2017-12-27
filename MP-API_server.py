@@ -4,21 +4,10 @@ import decimal
 import sys
 from flask import Flask
 from flask import jsonify
+from flask_cors import CORS
+from werkzeug.exceptions import default_exceptions
+from werkzeug.exceptions import HTTPException
 from boto3.dynamodb.conditions import Key, Attr
-from flask_httpauth import HTTPBasicAuth
-
-app = Flask(__name__)
-auth = HTTPBasicAuth()
-
-@auth.get_password
-def get_password(username):
-    if username == 'miguel':
-        return 'python'
-    return None
-
-@auth.error_handler
-def unauthorized():
-    return jsonify({'error': 'Unauthorized access'})
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -32,13 +21,13 @@ class DecimalEncoder(json.JSONEncoder):
 
 app = Flask(__name__)
 
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 @app.route('/')
 def show_login():
-    #prompt for login
     return 'Welcome to MP-Browser'
 
 @app.route('/user/<int:user_id>')
-@auth.login_required
 def show_user_profile(user_id):
 	
 	client = boto3.resource('dynamodb')
@@ -55,11 +44,8 @@ def show_user_profile(user_id):
 	
 	#use this to return the JSON string to the screen
 	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
-
-	#return app.response_class((item), content_type='application/json')
 	
 @app.route('/route/<int:route_id>')
-@auth.login_required
 def show_route(route_id):
 	
 	client = boto3.resource('dynamodb')
@@ -76,10 +62,7 @@ def show_route(route_id):
 	#use this to return the JSON string to the screen
 	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
 
-	#return app.response_class((item), content_type='application/json')	
-
 @app.route('/user/ticks/<int:user_id>')	
-@auth.login_required
 def show_ticks_for_user(user_id):
 	#show list of ticks for a user
 	client = boto3.resource('dynamodb')
@@ -93,12 +76,6 @@ def show_ticks_for_user(user_id):
 	
 	#use this to return the JSON string to the screen
 	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
-	#return app.response_class((response), content_type='application/json')	
-	#return jsonify(response)
-	
-@app.errorhandler(404)
-def not_found(error):
-    return make_response(jsonify({'error': 'Not found'}), 404)		
 	
 if __name__ == '__main__':
     app.run()
