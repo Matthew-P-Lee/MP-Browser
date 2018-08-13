@@ -22,7 +22,5 @@ class TestMPAPI(unittest.TestCase):
 		print(ticks)
 		self.assertTrue(ticks)
 
-
-
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-import urllib.request
+import urllib
 import json
 import boto3
 import decimal

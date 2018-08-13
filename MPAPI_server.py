@@ -8,6 +8,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import default_exceptions
 from werkzeug.exceptions import HTTPException
 from boto3.dynamodb.conditions import Key, Attr
+from MPAPI_classes import *
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -19,9 +20,13 @@ class DecimalEncoder(json.JSONEncoder):
                 return int(o)
         return super(DecimalEncoder, self).default(o)
 
-app = Flask(__name__)
+#use this to return the JSON string to the screen
+def get_JSON(item):
+	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
 
+app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+MPAPI = MPAPI()
 
 @app.route('/')
 def show_login():
@@ -29,53 +34,18 @@ def show_login():
 
 @app.route('/user/<int:user_id>')
 def show_user_profile(user_id):
-	
-	client = boto3.resource('dynamodb')
-	
-	tbl_users = client.Table('User')
-    
-	response = tbl_users.get_item(
-		Key={
-			"UserId": int(user_id)
-		}
-	)    
-	
-	item = response.get('Item',0)	
-	
-	#use this to return the JSON string to the screen
-	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
+	item = MPAPI.get_profile(user_id)
+	return get_JSON(item)
 	
 @app.route('/route/<int:route_id>')
-def show_route(route_id):
-	
-	client = boto3.resource('dynamodb')
-	tbl_routes = client.Table('Routes')
-    
-	response = tbl_routes.get_item(
-		Key={
-			"RouteId": int(route_id)
-		}
-	)    
-		
-	item = response.get('Item',0)	
-	
-	#use this to return the JSON string to the screen
-	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
+def show_route(route_id):	
+	item = MPAPI.get_route(route_id)
+	return get_JSON(item)
 
 @app.route('/user/ticks/<int:user_id>')	
-def show_ticks_for_user(user_id):
-	#show list of ticks for a user
-	client = boto3.resource('dynamodb')
-	tbl_ticks = client.Table('Ticks')
-	
-	response = tbl_ticks.query(
-	   KeyConditionExpression=Key('UserId').eq(user_id)
-	)
-		
-	item = response.get('Items',0)	
-	
-	#use this to return the JSON string to the screen
-	return app.response_class(json.dumps(item,cls=DecimalEncoder), content_type='application/json')
+def show_ticks_for_user(user_id):	
+	item = MPAPI.get_ticks(user_id)
+	return get_JSON(item)
 	
 if __name__ == '__main__':
     app.run()
