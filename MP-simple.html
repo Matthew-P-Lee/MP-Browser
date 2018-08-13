@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title></title>
+<title>MP Browser - Simple HTML Example Client</title>
 <meta charset="UTF-8" />
 </head>
+<body onload="loadPage()">
 
-<body>
+<h2>Simple HTTP Client for MP Browser</h2>
 
+<input type='text' ></input>
+<button>Load Profile</button>
 
-<svg xmlns="http://www.w3.org/2000/svg">
-<rect stroke="black" fill="blue" x="45px" y="45px" width="200px" height="100px" stroke-width="2" />
-</svg>
+<div id="profile"></div>
+<div id="ticks"></div>
 
+<script>
+function loadPage() {
+	loadProfileForUser();
+	loadTicksForUser();
+}
+
+function loadProfileForUser() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var profile = JSON.parse(this.responseText);
+      txt = '<ul class=\'profile_list\'>';
+      txt += '<li class=\'profile_list_item\'>' + profile['UserId'] + '</li>'; 
+      txt += '<li class=\'profile_list_item\'>' + profile['name'] + '</li>'; 
+      txt += '<li class=\'profile_list_item\'>' + profile['location'] + ',&nbsp;' + profile['postal_code'] + '</li>'; 
+      txt += '<li class=\'profile_list_item\'>' + profile['other_Interests'] + '</li>'; 
+      txt += '</ul>';
+    
+      document.getElementById("profile").innerHTML = txt;
+    }
+  };
+  xhttp.open("GET", "http://127.0.0.1:5000/user/112244155", true);
+  xhttp.send();
+}
+
+function loadTicksForUser() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var myObj = JSON.parse(this.responseText);
+      
+      txt = '<ul>';
+      
+      for (i in myObj)
+      {
+      	txt+=("<li>" + myObj[i].name + "</li>");
+      }
+      
+      txt += '</ul>'
+    
+      document.getElementById("ticks").innerHTML = txt;
+    }
+  };
+  xhttp.open("GET", "http://127.0.0.1:5000/user/ticks/112244155", true);
+  xhttp.send();
+}
+</script>
 
 </body>
 </html>
