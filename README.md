@@ -6,12 +6,12 @@ resume with different styles.   I use this project to play with Python, Flask, J
 ## Database Schema
 
 * Users
-    Id
-    First Name 
-    Last Name
-    City
-    PersonalText
-    Avatar	
+    * Id
+    * First Name 
+    * Last Name
+    * City
+    * PersonalText
+    * Avatar	
 * Ticks
     UserId
     RouteId
