@@ -6,21 +6,21 @@ resume with different styles.   I use this project to play with Python, Flask, J
 ## Database Schema
 
 * Users
--	Id
--	First Name
--	Last Name
--	City
--	PersonalText
--	Avatar	
+    Id
+    First Name 
+    Last Name
+    City
+    PersonalText
+    Avatar	
 * Ticks
--	UserId
--	RouteId
--	Date
+    UserId
+    RouteId
+    Date
 * Routes
--	RouteId
--	Name
--	Rating
--	Location
+    RouteId
+    Name
+    Rating
+    Location
 
 ## MP-API_server.py - Microservices Flask server
 REST API allows for the retrieval of routes, ticks and user profile data.
