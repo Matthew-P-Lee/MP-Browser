@@ -2,9 +2,11 @@ import unittest
 import warnings
 from MPAPI_classes import *
 
+#testing for the API
 class TestMPAPI(unittest.TestCase):
 	
 	def setUp(self):
+		#filtering out a boto warning
 		warnings.filterwarnings("ignore", category=ResourceWarning, message="unclosed.*<ssl.SSLSocket.*>") 
 	
 	def test_GetUser(self):

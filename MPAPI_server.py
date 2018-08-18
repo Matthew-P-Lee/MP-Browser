@@ -10,7 +10,8 @@ from werkzeug.exceptions import HTTPException
 from boto3.dynamodb.conditions import Key, Attr
 from MPAPI_classes import *
 
-# Helper class to convert a DynamoDB item to JSON.
+# Helper class to convert a DynamoDB item to JSON.  For some reason Boto has trouble 
+# time dealing with floats in JSON
 class DecimalEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, decimal.Decimal):

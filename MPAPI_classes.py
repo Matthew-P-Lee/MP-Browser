@@ -3,11 +3,13 @@ import boto3
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
 
+# common functions for the web service
+# mostly just handles DynamoDB in/out
 class MPAPI():
 	def __init__(self):
 		return
 		
-	#get a single user profile
+	#gets a single user profile
 	def get_profile(self, user_id):
 		
 		client = boto3.resource('dynamodb')
@@ -24,7 +26,7 @@ class MPAPI():
 	
 		return item 
 	
-	#get a single route
+	#gets a single route
 	def get_route(self,route_id):
 		
 		client = boto3.resource('dynamodb')
