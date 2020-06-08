@@ -15,18 +15,8 @@ import simplejson as json
 from decimal import *
 
 mp_URL_base='https://www.mountainproject.com/data'
-mp_URL_email='foo@vistaseeker.com'
-mp_private_key='xxxxxx'
-
-# Helper class to convert a DynamoDB item to JSON.
-class DecimalEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, decimal.Decimal):
-            if o % 1 > 0:
-                return Decimal(o)
-            else:
-                return int(o)
-        return super(DecimalEncoder, self).default(o)
+mp_URL_email='foo@bar.com'
+mp_private_key='xxxxx'
 
 #function to return a Python obj from a JSON result via HTTP
 def getMP_API(url):
