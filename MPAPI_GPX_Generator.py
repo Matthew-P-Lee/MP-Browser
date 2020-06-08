@@ -15,8 +15,8 @@ import simplejson as json
 from decimal import *
 
 mp_URL_base='https://www.mountainproject.com/data'
-mp_URL_email='xxx'
-mp_private_key='xxxx'
+mp_URL_email='foo@vistaseeker.com'
+mp_private_key='xxxxxx'
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -53,18 +53,11 @@ if len(route_ids) > 0:
 	#return routes
 	routes_url = getMP_URL(mp_URL_base,'get-routes',mp_URL_email,mp_private_key)
 	routes_url = str.format("{0}&routeIds={1}",routes_url,route_ids)
-
 	mp_routes = json_str = getMP_API(routes_url)
 
 	gpxinstance = gpx.GPX()
 
 	for route in mp_routes['routes']:
-		#print(route)
-		#print(route['name'],' - ', route['rating'],' - ',route['location'][1], ' - ' ,route['location'][2])
-		#print('latitude', route['latitude'])
-		#print('longitude', route['longitude'])
-		#print(route['url'])
-
 		gpxinstance.waypoints.append(
 			gpx.GPXWaypoint(
 				Decimal(str(route['latitude'])), 
