@@ -4,8 +4,8 @@ import simplejson as json
 from decimal import *
 
 mp_URL_base='https://www.mountainproject.com/data'
-mp_URL_email='matt@vistaseeker.com'
-mp_private_key='112244155-faf71266e0e5a4f73c53cc5ef291800d'
+mp_URL_email='xxxxxxx'
+mp_private_key='xxxxxx'
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
